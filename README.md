@@ -9,59 +9,30 @@ Sockets Links.
  server .
 4. Send and receive the message using the send function in socket.
 ## PROGRAM
-```import socket
+```
+SERVER: 
+ 
+import socket 
+s=socket.socket() 
+s.bind(('localhost',8000)) 
+s.listen(5) 
+c,addr=s.accept() 
+while True: 
+ClientMessage=c.recv(1024).decode() 
+c.send(ClientMessage.encode())
 
-# Echo Server
-def echo_server():
-    HOST = '127.0.0.1'
-    PORT = 65432
-
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
-        server_socket.bind((HOST, PORT))
-        server_socket.listen()
-        print('Server is listening...')
-        
-        conn, addr = server_socket.accept()
-        
-        with conn:
-            print('Connected by', addr)
-            while True:
-                data = conn.recv(1024)
-                if not data:
-                    break
-                conn.sendall(data)
-
-# Echo Client
-def echo_client():
-    HOST = '127.0.0.1'
-    PORT = 65432
-
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
-        client_socket.connect((HOST, PORT))
-        
-        while True:
-            message = input("Enter message to send to server (type 'exit' to quit): ")
-            if message.lower() == 'exit':
-                break
-            
-            client_socket.sendall(message.encode())
-            
-            data = client_socket.recv(1024)
-            print('Received from server:', data.decode())
-
-import threading
-
-server_thread = threading.Thread(target=echo_server)
-client_thread = threading.Thread(target=echo_client)
-
-server_thread.start()
-client_thread.start()
-
-server_thread.join()
-client_thread.join()
+CLIENT: 
+ 
+import socket 
+s=socket.socket() 
+s.connect(('localhost',8000)) 
+while True: 
+msg=input("Client > ") 
+s.send(msg.encode()) 
+print("Server > ",s.recv(1024).decode()) 
 ```
 ## OUPUT
-![image](https://github.com/RahulvVenugopal/3a.Sockets_Creation_for_Echo_Client_and_Echo_Server/assets/144132514/b5f94dc3-7058-48cc-b643-553a02a22a17)
+![Screenshot (171)](https://github.com/RahulvVenugopal/3a.Sockets_Creation_for_Echo_Client_and_Echo_Server/assets/144132514/892a919a-9412-4d9d-9ff2-962ac90145fc)
 
 ## RESULT
 Thus, the python program for creating Echo Client and Echo Server using TCP Sockets Links 
